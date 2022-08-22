@@ -1,16 +1,18 @@
 package com.api.tdd.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.time.LocalDate;
+
 @Entity
-public class BookingModel {
+public class BookingModel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
-    private String reserveName;
+    private String reservedName;
     private LocalDate checkIn;
     private LocalDate checkOut;
     private int numberGuest;
@@ -20,14 +22,14 @@ public class BookingModel {
 
     public BookingModel(String id, String reserveName, LocalDate checkIn, LocalDate checkOut, int numberGuest) {
         this.id = id;
-        this.reserveName = reserveName;
+        this.reservedName = reserveName;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.numberGuest = numberGuest;
     }
 
     public BookingModel(String reserveName, LocalDate checkIn, LocalDate checkOut, int numberGuest) {
-        this.reserveName = reserveName;
+        this.reservedName = reserveName;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.numberGuest = numberGuest;
@@ -41,12 +43,12 @@ public class BookingModel {
         this.id = id;
     }
 
-    public String getReserveName() {
-        return reserveName;
+    public String getReservedName() {
+        return reservedName;
     }
 
-    public void setReserveName(String reserveName) {
-        this.reserveName = reserveName;
+    public void setReservedName(String reserveName) {
+        this.reservedName = reserveName;
     }
 
     public LocalDate getCheckIn() {

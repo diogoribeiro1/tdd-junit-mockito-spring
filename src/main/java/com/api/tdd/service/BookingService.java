@@ -3,19 +3,21 @@ package com.api.tdd.service;
 import com.api.tdd.model.BookingModel;
 import com.api.tdd.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 public class BookingService {
 
     @Autowired
-    BookingRepository bookingRepository;
+    BookingRepository repository;
+
+
     public int daysCalculatorWithDatabase(String name) throws Exception {
-        BookingModel model = bookingRepository.findByReservedName(name);
+        BookingModel model = repository.findByReservedName(name);
         if (model == null){
             throw new Exception("Model nao Encontrado");
         }
@@ -23,26 +25,30 @@ public class BookingService {
     }
 
     public List<BookingModel> findAll(){
-        return bookingRepository.findAll();
+        return repository.findAll();
     }
 
     public BookingModel findById(String id) throws Exception {
-        Optional<BookingModel> model = bookingRepository.findById(id);
+        Optional<BookingModel> model = repository.findById(id);
         if (model.isEmpty()){
             throw new Exception("Booking não encontrado");
         }
-        return bookingRepository.findById(id).get();
+        return repository.findById(id).get();
     }
 
     public void delete(String id) throws Exception {
-        Optional<BookingModel> model = bookingRepository.findById(id);
+        Optional<BookingModel> model = repository.findById(id);
         if (model.isEmpty()){
             throw new Exception("Booking não encontrado");
         }
-        bookingRepository.delete(model.get());
+        repository.delete(model.get());
     }
 
-    public BookingModel save(BookingModel model){
-        return bookingRepository.save(model);
+    public BookingModel save(BookingModel model) throws Exception {
+//        Optional<BookingModel> modelOptional = repository.findById(model.getId());
+//        if (!modelOptional.isEmpty()){
+//            throw new Exception("Booking ja existe");
+//        }
+        return repository.save(model);
     }
 }
