@@ -24,18 +24,42 @@ public class BookingController {
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody BookingModel getById(@PathVariable(value = "id") String id) throws Exception {
-        return bookingService.findById(id);
+    public @ResponseBody ResponseEntity<Object> getById(@PathVariable(value = "id") String id) throws Exception {
+
+        BookingModel bookingModel = bookingService.findById(id);
+
+        if (bookingModel == null){
+            return new ResponseEntity<>("BOOKING NOT FOUND", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(bookingModel, HttpStatus.OK);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<BookingModel> save(@RequestBody BookingModel model) throws Exception {
-        return new ResponseEntity<>(bookingService.save(model), HttpStatus.CREATED);
+    public ResponseEntity<Object> save(@RequestBody BookingModel model) throws Exception {
+
+        BookingModel bookingModel = bookingService.save(model);
+
+        if (bookingModel == null){
+            return new ResponseEntity<>("BOOKING ALREADY EXISTS", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(bookingModel, HttpStatus.CREATED);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable(value = "id") String id) throws Exception {
-        bookingService.delete(id);
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") String id) throws Exception {
+
+        String result = bookingService.delete(id);
+
+        if (result == null){
+            return new ResponseEntity<>("BOOKING DONT EXISTS", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(result, HttpStatus.OK) ;
+        }
     }
 
 }

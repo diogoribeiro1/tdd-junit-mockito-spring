@@ -3,6 +3,7 @@ package com.api.tdd.service;
 import com.api.tdd.model.BookingModel;
 import com.api.tdd.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.time.Period;
@@ -29,26 +30,32 @@ public class BookingService {
     }
 
     public BookingModel findById(String id) throws Exception {
+
         Optional<BookingModel> model = repository.findById(id);
-        if (model.isEmpty()){
-            throw new Exception("Booking não encontrado");
+
+        if (model == null){
+            return null;
         }
         return repository.findById(id).get();
     }
 
-    public void delete(String id) throws Exception {
+    public String delete(String id) throws Exception {
         Optional<BookingModel> model = repository.findById(id);
-        if (model.isEmpty()){
-            throw new Exception("Booking não encontrado");
+
+        if (model == null){
+            return null;
         }
         repository.delete(model.get());
+        return "deleted";
     }
 
     public BookingModel save(BookingModel model) throws Exception {
-//        Optional<BookingModel> modelOptional = repository.findById(model.getId());
-//        if (!modelOptional.isEmpty()){
-//            throw new Exception("Booking ja existe");
-//        }
-        return repository.save(model);
+
+        BookingModel modelOptional = repository.findByReservedName(model.getReservedName());
+
+        if (modelOptional == null){
+            return repository.save(model);
+        }
+        return null;
     }
 }
